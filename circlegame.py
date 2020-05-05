@@ -1,5 +1,7 @@
 import pygame as pg
 from random import randint as rand
+from math import sqrt as koren
+
 pg.init()
 
 ekran = pg.display.set_mode((800,600))
@@ -19,6 +21,18 @@ kcx = rand(100,700)
 kcy = rand(100,400)
 def krug(x,y):
     pg.draw.circle(ekran,pg.Color('red'),(x,y),32,1)
+
+def pogodak(x,y,a,b):
+    razmak = koren((x+32-a)**2+(y+32-b)**2)
+    if razmak<27:
+        return True
+    else:
+        return False
+
+font = pg.font.SysFont('Ariel',60)
+score = 0
+def poruka(poeni):
+    return font.render("Score: " + str(score),True,pg.Color('black'))
 
 igrica = True
 
@@ -42,6 +56,8 @@ while igrica:
                 ixpr = 0
             if event.key == pg.K_UP or event.key == pg.K_DOWN:
                 iypr = 0
+    
+    ekran.blit(poruka(score),(0,0))
 
     ixko += ixpr
     iyko += iypr
@@ -55,10 +71,10 @@ while igrica:
     elif iyko>=532:
         iyko = 532
     
-    if ixko + 32 == kcx and iyko + 32 == kcy:
-        print('Radi')
+    if pogodak(ixko,iyko,kcx,kcy):
         kcx = rand(100,700)
         kcy = rand(100,400)
+        score+=1
 
     krug(kcx,kcy)
     igrac(logo,ixko,iyko)
