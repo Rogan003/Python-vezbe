@@ -19,8 +19,9 @@ def igrac(slika,x,y):
 
 kcx = rand(100,700)
 kcy = rand(100,400)
-def krug(x,y):
-    pg.draw.circle(ekran,pg.Color('red'),(x,y),32,1)
+poluprecnik = 32
+def krug(x,y,col,deb,p):
+    pg.draw.circle(ekran,col,(x,y),p,deb)
 
 def pogodak(x,y,a,b):
     razmak = koren((x+32-a)**2+(y+32-b)**2)
@@ -28,6 +29,19 @@ def pogodak(x,y,a,b):
         return True
     else:
         return False
+
+def randomBoja():
+    r = rand(0,255)
+    g = rand(0,255)
+    b = rand(0,255)
+    return (r,g,b)
+
+boja = randomBoja()
+
+def randomDebljina():
+    return rand(1,5)
+
+debljina = randomDebljina()
 
 font = pg.font.SysFont('Ariel',60)
 score = 0
@@ -42,6 +56,8 @@ while igrica:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             igrica = False
+        if event.type == pg.MOUSEMOTION:
+            (ixko,iyko) = event.pos
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_LEFT:
                 ixpr -= 0.3
@@ -75,7 +91,15 @@ while igrica:
         kcx = rand(100,700)
         kcy = rand(100,400)
         score+=1
-
-    krug(kcx,kcy)
-    igrac(logo,ixko,iyko)
-    pg.display.update()
+        boja = randomBoja()
+        debljina = randomDebljina()
+        poluprecnik-=1
+    
+    if poluprecnik>10:
+        krug(kcx,kcy,boja,debljina,poluprecnik)
+        igrac(logo,ixko,iyko)
+        pg.display.update()
+    else:
+        ekran.fill((0,0,0))
+        ekran.blit(font.render("YOU WON!",True,pg.Color('White')),(270,300))
+        pg.display.update()
