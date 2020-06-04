@@ -14,6 +14,7 @@ cene = [0,0,0,0,0]
 for i in range(5):
     cene[i] = sum(df.loc[df['Liga'] == lige[i],['Cena(u milionima)']]['Cena(u milionima)'])
 
+print(df['Ime'])
 print(cene)
 
 fig,ax = plt.subplots()
